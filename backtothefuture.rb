@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-require 'pry'
 
 class BackToTheFuture
    def when name, &block
