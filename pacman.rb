@@ -4,27 +4,36 @@ require_relative 'backtothefuture.rb'
 
 b = BackToTheFuture.new
 
-class TestClass
-  def method1
-    puts "bla"
-    return 7
+class PacMan
+  def eat_dot
   end
 
-  def method2
-    puts "blu"
+  def hit_ghost
+  end
+
+  def eat_ghost
+    puts "Eat ghost."
+  end
+
+  def die
+    puts "You died."
+  end
+
+  def next_level
+    puts "You are now at the next level."
   end
 end
 
-test = TestClass.new
-test1 = TestClass.new
+p = PacMan.new
 
-b.when [test, :method1, {times: 2}], :repeat do
-  puts "XZVCZCV"
+b.when [p, :hit_ghost], :repeat do
+  if b.in_last_seconds(10, p, :eat_dot)
+    p.eat_ghost
+  else
+    p.die
+  end
 end
 
-b.when [test, :method1, {times: 2}], [test1, :method1] do
-  puts "XZVCZCVASDFASDFASD"
-end
+b.when [p, :eat_dot, {times: 5}] { p.next_level }
 
 binding.pry
-# test.method1
