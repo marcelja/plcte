@@ -126,7 +126,7 @@ class BackToTheFuture
   end
   
   def destroy_all
-    @when_stmts = [];
+    @when_stmts = []
     @event_timestamps = {}
   end
 end
