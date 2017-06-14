@@ -6,9 +6,11 @@ b = BackToTheFuture.new
 
 class PacMan
   def eat_dot
+    puts "Eat dot."
   end
 
   def hit_ghost
+    puts "Hit ghost."
   end
 
   def eat_ghost
