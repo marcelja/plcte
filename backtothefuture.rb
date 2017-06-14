@@ -36,7 +36,6 @@ class WhenStatement
   if @args.last == :repeat
     @args.pop
     @repeat = true
-    puts "REPEAT"
   end
     @args.each do |a|
       props = {}
@@ -61,10 +60,12 @@ class WhenStatement
 end
       
 class BackToTheFuture
-    @@when_stmts = []
+  attr_accessor :when_stmts
+
    def initialize
+    @when_stmts = []
      TracePoint.trace(:return) do |t|
-       @@when_stmts.each do |w|
+       @when_stmts.each do |w|
          w.compare_methods t.binding.receiver, t.method_id
        end
      end
@@ -76,7 +77,7 @@ class BackToTheFuture
        return
      end
      when_statement = WhenStatement.new(args) { yield }
-     @@when_stmts.push(when_statement)
+     @when_stmts.push(when_statement)
    end
 
    def check_args(*args)
