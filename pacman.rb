@@ -18,7 +18,7 @@ end
 test = TestClass.new
 test1 = TestClass.new
 
-b.when [test, :method1, {times: 2}] do
+b.when [test, :method1, {times: 2}], :repeat do
   puts "XZVCZCV"
 end
 

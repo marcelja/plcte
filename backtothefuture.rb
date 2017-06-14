@@ -22,9 +22,10 @@ class WhenCase
 end
 
 class WhenStatement
-  attr_accessor :when_cases, :block, :args
+  attr_accessor :when_cases, :block, :args, :repeat
 
   def initialize(args, &block)
+  @repeat = false
 	@args = args
 	@block = block
     parse
@@ -32,6 +33,11 @@ class WhenStatement
   
   def parse
 	@when_cases = []
+  if @args.last == :repeat
+    @args.pop
+    @repeat = true
+    puts "REPEAT"
+  end
     @args.each do |a|
       props = {}
       if a.length == 3
@@ -43,12 +49,13 @@ class WhenStatement
   end
 
   def compare_methods object, method
+    return if @when_cases.empty?
     @when_cases.delete_if do |c|
       c.compare_method object, method
     end
     if @when_cases.empty?
       @block.call
-	  parse
+	  parse if @repeat
     end
   end
 end
