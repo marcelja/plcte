@@ -22,28 +22,33 @@ class WhenCase
 end
 
 class WhenStatement
-  attr_accessor :when_cases, :block
+  attr_accessor :when_cases, :block, :args
 
   def initialize(args, &block)
-    @when_cases = []
-    args.each do |a|
+	@args = args
+	@block = block
+    parse
+  end
+  
+  def parse
+	@when_cases = []
+    @args.each do |a|
       props = {}
       if a.length == 3
         props = a[2]
       end
       when_case = WhenCase.new(a[0], a[1], props)
       @when_cases.push(when_case)
-      @block = block
     end
   end
 
   def compare_methods object, method
-    return if @when_cases.empty?
     @when_cases.delete_if do |c|
       c.compare_method object, method
     end
     if @when_cases.empty?
       @block.call
+	  parse
     end
   end
 end
