@@ -1,21 +1,19 @@
 #!/usr/bin/ruby
 
 class WhenCase
-  @@times = 1
-  @@method = nil
-  @@object = nil
+  attr_accessor :object, :method, :times
 
   def initialize object, method, props
-    @@object = object
-    @@method = method
-    @@times = 1
+    @object = object
+    @method = method
+    @times = 1
 
     if props.key?(:times)
-      @@times = props[:times]
+      @times = props[:times]
     end
-    puts @@object
-    puts @@method
-    puts @@times
+    puts @object
+    puts @method
+    puts @times
   end
 
   def compare_method object, method
@@ -26,37 +24,39 @@ class WhenCase
     # end
       if method == :method1
         puts object
-        puts @@object
+        puts @object
       end
-    if @@object == object && @@method == method
+    if @object == object && @method == method
       puts "-1"
-      @@times -= 1
+      @times -= 1
     end
-    @@times == 0
+    @times == 0
   end
 end
 
 class WhenStatement
-  @@when_cases = []
+  attr_accessor :when_cases, :block
+
   def initialize(args, &block)
+    @when_cases = []
     args.each do |a|
       props = {}
       if a.length == 3
         props = a[2]
       end
       when_case = WhenCase.new(a[0], a[1], props)
-      @@when_cases.push(when_case)
-      @@block = block
+      @when_cases.push(when_case)
+      @block = block
     end
   end
 
   def compare_methods object, method
-    return if @@when_cases.empty?
-    @@when_cases.delete_if do |c|
+    return if @when_cases.empty?
+    @when_cases.delete_if do |c|
       c.compare_method object, method
     end
-    if @@when_cases.empty?
-      @@block.call
+    if @when_cases.empty?
+      @block.call
     end
   end
 end
