@@ -28,15 +28,16 @@ class WhenStatement
     @repeat = false
     @args = args
     @block = block
+
+    if @args.last == :repeat
+      @args.pop
+      @repeat = true
+    end
     parse
   end
   
   def parse
-	@when_cases = []
-  if @args.last == :repeat
-    @args.pop
-    @repeat = true
-  end
+    @when_cases = []
     @args.each do |a|
       props = {}
       if a.length == 3
@@ -125,7 +126,7 @@ class BackToTheFuture
   end
   
   def destroy_all
-    @when_stmts = [];
+    @when_stmts = []
     @event_timestamps = {}
   end
 end
