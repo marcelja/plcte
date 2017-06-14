@@ -14,7 +14,7 @@ class WhenCase
   end
 
   def compare_method object, method
-    if @object == object && @method == method
+    if (@object == :any || @object == object) && @method == method
       @times -= 1
     end
     @times == 0
@@ -76,12 +76,12 @@ class BackToTheFuture
   end
 
   def add_event_item object, method
-    if @event_timestamps.has_key?(object.__id__)
-      @event_timestamps[object.__id__][method] = Time.now.to_i
+    if @event_timestamps.has_key?(method)
+      @event_timestamps[method][object.__id__] = Time.now.to_i
     else
       method_timestamp = {}
-      method_timestamp[method] = Time.now.to_i
-      @event_timestamps[object.__id__] = method_timestamp
+      method_timestamp[object.__id__] = Time.now.to_i
+      @event_timestamps[method] = method_timestamp
     end
   end
 
@@ -92,16 +92,40 @@ class BackToTheFuture
     end
     when_statement = WhenStatement.new(args) { yield }
     @when_stmts.push(when_statement)
+	return true;
   end
 
   def check_args(args)
     true
   end
-
+  
   def in_last_seconds seconds, object, method
-    return false unless @event_timestamps.has_key?(object.__id__)
-    return false unless @event_timestamps[object.__id__].has_key?(method)
-    executed_at = @event_timestamps[object.__id__][method]
-    Time.now.to_i - executed_at <= seconds
+	return false unless @event_timestamps.has_key?(method)
+	executed_at = 0
+	if object == :any
+	  executed_at = get_timestamp method
+	  return false if executed_at == -1
+	else
+	  return false unless @event_timestamps[method].has_key?(object.__id__)
+	  executed_at = @event_timestamps[method][object.__id__]
+    end
+	Time.now.to_i - executed_at <= seconds
+  end
+  
+  def get_timestamp method
+    return -1 if @event_timestamps[method].empty?
+	
+	max_stamp = -1;
+	@event_timestamps[method].each do |key, stamp|
+	  if stamp > max_stamp
+		max_stamp = stamp
+	  end
+	end
+	return max_stamp
+  end
+  
+  def destroy_all
+    @when_stmts = [];
+	@event_timestamps = {};
   end
 end
