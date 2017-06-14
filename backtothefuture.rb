@@ -1,36 +1,15 @@
 #!/usr/bin/ruby
+require 'pry'
 
 class BackToTheFuture
-  @@classlist = []
-   def when method_name
-     puts "TEST TEST"
-     puts method_name
-   end
+   def when name, &block
+     class_name = name.partition('.').first
+     method_name = name.partition('.').last
 
-   def new class_name
-     add_class class_name
-   end
-
-   def add_class class_name
-     # class_name.class_eval {def bar; puts 123; end}
-     new_class = Class.new
-     @@classlist.push([new_class, class_name])
-     class_name.instance_methods(false).each { |x| add_method new_class, x }
-     print_classes
-     puts new_class.methods(false)
-     new_class
-   end
-
-   def add_method new_class, method_name
-     new_class.define_singleton_method(method_name) do
-       puts "YOASUFUO"
+     TracePoint.trace(:call) do |t|
+       block.call if t.method_id.to_s == method_name && t.defined_class.name == class_name
      end
    end
-
-   def print_classes
-     @@classlist.each { |x| puts "  " + x.to_s }
-   end
-
 end
 
 class TestClass
@@ -44,5 +23,15 @@ class TestClass
 end
 
 b = BackToTheFuture.new
-ttt = b.new TestClass
-ttt.method1
+test = TestClass.new
+
+b.when ("TestClass.method1") { puts "blabla" }
+
+b.when ("TestClass.method2") do
+  testvar = 12345
+  puts testvar - 777
+  puts "done"
+end
+
+binding.pry
+# test.method1
