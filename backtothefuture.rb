@@ -92,7 +92,7 @@ class BackToTheFuture
     end
     when_statement = WhenStatement.new(args) { yield }
     @when_stmts.push(when_statement)
-	return true;
+    return true
   end
 
   def check_args(args)
@@ -100,32 +100,32 @@ class BackToTheFuture
   end
   
   def in_last_seconds seconds, object, method
-	return false unless @event_timestamps.has_key?(method)
-	executed_at = 0
-	if object == :any
-	  executed_at = get_timestamp method
-	  return false if executed_at == -1
-	else
-	  return false unless @event_timestamps[method].has_key?(object.__id__)
-	  executed_at = @event_timestamps[method][object.__id__]
+    return false unless @event_timestamps.has_key?(method)
+    executed_at = 0
+    if object == :any
+      executed_at = get_timestamp method
+      return false if executed_at == -1
+    else
+      return false unless @event_timestamps[method].has_key?(object.__id__)
+      executed_at = @event_timestamps[method][object.__id__]
     end
-	Time.now.to_i - executed_at <= seconds
+    Time.now.to_i - executed_at <= seconds
   end
   
   def get_timestamp method
     return -1 if @event_timestamps[method].empty?
 	
-	max_stamp = -1;
-	@event_timestamps[method].each do |key, stamp|
-	  if stamp > max_stamp
-		max_stamp = stamp
-	  end
-	end
-	return max_stamp
+    max_stamp = -1
+    @event_timestamps[method].each do |key, stamp|
+      if stamp > max_stamp
+        max_stamp = stamp
+      end
+    end
+    return max_stamp
   end
   
   def destroy_all
     @when_stmts = [];
-	@event_timestamps = {};
+    @event_timestamps = {}
   end
 end
