@@ -19,10 +19,10 @@ test = TestClass.new
 test1 = TestClass.new
 
 # b.when ("TestClass.method1") { puts "blabla" }
-b.when [test, :method1] { puts "blabla" }
+b.when test, :method1 { puts "blabla" }
 a = 7
 
-b.when [test1, :method1] { puts "blablabla" }
+b.when test1, :method1 { puts "blablabla" }
 
 # b.when ("TestClass.method2") do
 #   testvar = 12345

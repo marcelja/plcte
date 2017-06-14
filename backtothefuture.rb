@@ -1,15 +1,13 @@
 #!/usr/bin/ruby
 
 class BackToTheFuture
-   def when method, &block
-     # class_name = name.partition('.').first
-     # method_name = name.partition('.').last
-     object = method.first
-     method_name = method.last
+   def when object, method
 
      # TracePoint.trace(:call) do |t|
      TracePoint.trace(:return) do |t|
-       block.call if t.method_id == method_name && t.binding.receiver == object
+       if t.method_id == method && t.binding.receiver == object
+         yield
+       end
      end
    end
 end
