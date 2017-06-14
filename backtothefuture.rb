@@ -60,14 +60,28 @@ class WhenStatement
 end
       
 class BackToTheFuture
-  attr_accessor :when_stmts
+  attr_accessor :when_stmts, :event_timestamps
 
    def initialize
     @when_stmts = []
+    @event_timestamps = {}
+
      TracePoint.trace(:return) do |t|
+       add_event_item t.binding.receiver, t.method_id
+
        @when_stmts.each do |w|
          w.compare_methods t.binding.receiver, t.method_id
        end
+     end
+   end
+
+   def add_event_item object, method
+     if @event_timestamps.has_key?(object.__id__)
+       @event_timestamps[object.__id__][method] = Time.now.to_i
+     else
+       method_timestamp = {}
+       method_timestamp[method] = Time.now.to_i
+       @event_timestamps[object.__id__] = method_timestamp
      end
    end
 
@@ -82,5 +96,12 @@ class BackToTheFuture
 
    def check_args(*args)
      true
+   end
+
+   def in_last_seconds seconds, object, method
+     return false unless @event_timestamps.has_key?(object.__id__)
+     return false unless @event_timestamps[object.__id__].has_key?(method)
+     executed_at = @event_timestamps[object.__id__][method]
+     Time.now.to_i - executed_at <= seconds
    end
 end
