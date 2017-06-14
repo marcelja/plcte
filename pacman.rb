@@ -29,7 +29,7 @@ end
 p = PacMan.new
 
 b.when [p, :hit_ghost], :repeat do
-  if b.in_last_seconds(10, p, :eat_dot)
+  if b.in_last_seconds 10, p, :eat_dot
     p.eat_ghost
   else
     p.die
