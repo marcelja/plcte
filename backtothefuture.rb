@@ -11,23 +11,10 @@ class WhenCase
     if props.key?(:times)
       @times = props[:times]
     end
-    puts @object
-    puts @method
-    puts @times
   end
 
   def compare_method object, method
-    # if method == :method1
-    #   puts 123
-    #   puts object
-    #   puts @@object
-    # end
-      if method == :method1
-        puts object
-        puts @object
-      end
     if @object == object && @method == method
-      puts "-1"
       @times -= 1
     end
     @times == 0
@@ -61,21 +48,6 @@ class WhenStatement
   end
 end
       
-      
-
-# class ObserveWhenStmt
-#   def init args
-#     args.each { |x| puts x }
-#     puts '123'
-#     yield
-#     puts '456'
-#   end
-# 
-#   def parse_methods args
-# 
-# end
-
-
 class BackToTheFuture
     @@when_stmts = []
    def initialize
@@ -98,17 +70,4 @@ class BackToTheFuture
    def check_args(*args)
      true
    end
-
-
-     # when_stmt = ObserveWhenStmt.new
-     # when_stmt.init(args) { yield }
-     # @@when_stmts.push(when_stmt)
-
-
-     # TracePoint.trace(:call) do |t|
-     # TracePoint.trace(:return) do |t|
-     #   if t.method_id == method && t.binding.receiver == object
-     #     puts 'bla'
-     #   end
-     # end
 end
