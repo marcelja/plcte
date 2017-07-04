@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'pry'
-require_relative 'backtothefuture.rb'
+require_relative '../backtothefuture.rb'
 
 class Account
   def initialize
@@ -36,6 +36,7 @@ class Account
     @counter = @counter + 1
     if @counter == 3
       lock
+    end
     ########
   end
 end
