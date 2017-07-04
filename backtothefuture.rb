@@ -100,6 +100,18 @@ class BackToTheFuture
     true
   end
   
+  def has_occurred object, method
+    return false unless @event_timestamps.has_key?(method)
+    if object == :any
+      executed_at = get_timestamp method
+      return false if executed_at == -1
+    else
+      return false unless @event_timestamps[method].has_key?(object.__id__)
+      executed_at = @event_timestamps[method][object.__id__]
+    end
+    return true
+  end
+  
   def in_last_seconds seconds, object, method
     return false unless @event_timestamps.has_key?(method)
     executed_at = 0
@@ -131,19 +143,23 @@ class BackToTheFuture
   end
 end
 
-class Object
-  attr_accessor :bttf
+b = BackToTheFuture.new;
 
+class Object
   def when_returned(*args)
-    @bttf.when(*args) { yield }
+    @@bttf.when(*args) { yield }
+  end
+  
+  def has_occurred(*args)
+    @@bttf.has_occurred(*args) { yield }
   end
 
   def in_last_seconds(*args)
-    @bttf.in_last_seconds(*args)
+    @@bttf.in_last_seconds(*args)
   end
 
   def initialize_backtothefuture
-    @bttf = BackToTheFuture.new
+    @@bttf = BackToTheFuture.new
   end
 end
 
