@@ -22,11 +22,13 @@ class SpaceInvaders
   end
 
   def request_shoot
+    ### implement here unless beginner
     if ### implement here ### current_time - 3 < @last_shot
       puts "Can't shoot. Reloading.."
     else
       shoot
     end
+    ########
   end
 end
 
