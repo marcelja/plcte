@@ -4,8 +4,7 @@ require_relative 'backtothefuture.rb'
 
 class Account
   def initialize
-    @state = :waiting 
-    # TODO
+    @state = :waiting
   end
 
   def login password
@@ -30,16 +29,15 @@ class Account
 
   def wrong
     puts "Wrong password!"
-    # TODO
   end
 end
 
 account = Account.new
 
-# when_returned [account, :wrong, {times: 3}] do
-#   account.lock
-# end
-
-# TODO
+### implement here
+when_returned [account, :wrong, {times: 3}] do
+  account.lock
+end
+########
 
 binding.pry

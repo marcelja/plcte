@@ -6,23 +6,26 @@ class SpaceInvaders
   attr_accessor :last_shot
 
   def initialize
-    @last_shot = nil
+    @last_shot = 0
   end
 
   def current_time
+    # Return current time in seconds.
     Time.now.to_i
   end
 
   def shoot
     puts "Shoot"
-    # TODO
+    ### implement here unless beginner
+    @last_shot = current_time
+    ########
   end
 
   def request_shoot
-    unless in_last_seconds 3, self, :shoot
-      shoot
-    else
+    if ### implement here ### current_time - 3 < @last_shot
       puts "Can't shoot. Reloading.."
+    else
+      shoot
     end
   end
 end
