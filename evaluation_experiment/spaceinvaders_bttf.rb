@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'pry'
-require_relative 'backtothefuture.rb'
+require_relative '../backtothefuture.rb'
 
 class SpaceInvaders
   def shoot
