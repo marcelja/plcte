@@ -2,15 +2,13 @@
 require 'pry'
 require_relative 'backtothefuture.rb'
 
-b = BackToTheFuture.new
-
 class PacMan
   def scared
-	puts 'pacman is scared'
+    puts 'pacman is scared'
   end
   
   def afraid
-	puts 'pacman is afraid'
+    puts 'pacman is afraid'
   end
 end
 
@@ -26,8 +24,8 @@ g3 = SpookyGhost.new
 g4 = SpookyGhost.new
 g5 = SpookyGhost.new
 
-b.when [g1, :scream], :repeat { p.afraid }
+when_returned [g1, :scream], :repeat { p.afraid }
 
-b.when [:any, :scream], :repeat { p.scared }
+when_returned [:any, :scream], :repeat { p.scared }
 
 binding.pry

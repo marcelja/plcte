@@ -130,3 +130,21 @@ class BackToTheFuture
     @event_timestamps = {}
   end
 end
+
+class Object
+  attr_accessor :bttf
+
+  def when_returned(*args)
+    @bttf.when(*args) { yield }
+  end
+
+  def in_last_seconds(*args)
+    @bttf.in_last_seconds(*args)
+  end
+
+  def initialize_backtothefuture
+    @bttf = BackToTheFuture.new
+  end
+end
+
+initialize_backtothefuture

@@ -2,8 +2,6 @@
 require 'pry'
 require_relative 'backtothefuture.rb'
 
-b = BackToTheFuture.new
-
 class PacMan
   def eat_dot
     puts "Eat dot."
@@ -28,14 +26,14 @@ end
 
 p = PacMan.new
 
-b.when [p, :hit_ghost], :repeat do
-  if b.in_last_seconds 10, p, :eat_dot
+when_returned [p, :hit_ghost], :repeat do
+  if in_last_seconds 10, p, :eat_dot
     p.eat_ghost
   else
     p.die
   end
 end
 
-b.when [p, :eat_dot, {times: 5}] { p.next_level }
+when_returned [p, :eat_dot, {times: 5}] { p.next_level }
 
 binding.pry

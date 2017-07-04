@@ -2,8 +2,6 @@
 require 'pry'
 require_relative 'backtothefuture.rb'
 
-b = BackToTheFuture.new
-
 class TestClass
   def method1
     puts "Method1 running..."
@@ -19,18 +17,18 @@ end
 test = TestClass.new
 
 # Example 1
-b.when [test, :method1] { puts "Method1 was called." }
+when_returned [test, :method1] { puts "Method1 was called." }
 
 # Example 2
-b.when [test, :method1, {times: 5}] { puts "Method1 was called 5 times." }
+when_returned [test, :method1, {times: 5}] { puts "Method1 was called 5 times." }
 
 # Example 3
-b.when [test, :method1], [test, :method2] { puts "M1 and M2 were called." }
+when_returned [test, :method1], [test, :method2] { puts "M1 and M2 were called." }
 
 # Example 4
-b.when [test, :method3, {times: 2}], :repeat { puts "bla" }
+when_returned [test, :method3, {times: 2}], :repeat { puts "bla" }
 
 # Example 5
-# b.in_last_seconds 5, test, :method1
+# in_last_seconds 5, test, :method1
 
 binding.pry
