@@ -22,18 +22,27 @@ class WhenCase
 end
 
 class WhenStatement
-  attr_accessor :when_cases, :block, :args, :repeat
+  attr_accessor :when_cases, :block, :args, :repeat, :locked
 
   def initialize(args, &block)
     @repeat = false
     @args = args
     @block = block
+	@locked = false
 
     if @args.last == :repeat
       @args.pop
       @repeat = true
     end
     parse
+  end
+  
+  def lock
+    @locked = true
+  end
+  
+  def unlock
+    @locked = false
   end
   
   def parse
@@ -49,6 +58,7 @@ class WhenStatement
   end
 
   def compare_methods object, method
+    return if @locked
     return if @when_cases.empty?
     @when_cases.delete_if do |c|
       c.compare_method object, method
@@ -93,7 +103,7 @@ class BackToTheFuture
     end
     when_statement = WhenStatement.new(args) { yield }
     @when_stmts.push(when_statement)
-    return true
+    return when_statement
   end
 
   def check_args(args)

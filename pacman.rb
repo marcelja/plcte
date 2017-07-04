@@ -5,11 +5,13 @@ require_relative 'backtothefuture.rb'
 class PacMan
   def eat_dot
     puts "Eat dot."
-	when_returned [:any, :next_level, {times: 5}] { puts "awesome" }
   end
 
   def hit_ghost
     puts "Hit ghost."
+	if has_occurred :any, :eat_dot
+		puts 'amazing'
+	end
   end
 
   def eat_ghost
@@ -17,11 +19,6 @@ class PacMan
   end
 
   def die
-    if in_last_seconds 10, :any, :eat_dot
-	  puts "foo"
-	else
-	  puts "bar"
-	end
   end
 
   def next_level
